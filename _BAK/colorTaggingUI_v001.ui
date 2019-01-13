@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>401</width>
+    <height>239</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="margin">
+      <number>5</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="colTagLabel">
+         <property name="text">
+          <string>COLOR TAGGING TOOL</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="margin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="setAllBtn">
+         <property name="text">
+          <string>Propagate Selections</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <property name="margin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QCheckBox" name="outlinerCheckBox">
+         <property name="text">
+          <string>Use Outliner Color</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="setOutlinerBtn">
+       <property name="text">
+        <string>Propagate Outliner Color</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="margin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QCheckBox" name="wireFrameCheckBox">
+         <property name="text">
+          <string>Use Wireframe Color</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sameAsOutlinerCheckBox">
+         <property name="text">
+          <string>Wireframe color is the same as outliner color</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="setWireframeBtn">
+       <property name="text">
+        <string>Propagate Wireframe Color</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="disableAllBtn">
+       <property name="text">
+        <string>Disable All On Selections</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
