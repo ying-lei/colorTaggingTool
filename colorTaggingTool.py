@@ -19,7 +19,6 @@ Usage:
 * run following commands in Maya Python
 
 import colorTaggingTool as ctool
-reload(ctool)
 ctool.run()
 
 
