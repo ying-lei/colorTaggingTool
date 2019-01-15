@@ -93,6 +93,9 @@ colorMapDict = {
         }
 
 
+# UI var
+win = None
+
 # ==================== MAIN UI ====================
 
 
@@ -106,10 +109,16 @@ def getMayaWindow():
 		return wrapInstance(long(ptr), qtToolInstance.QMainWindow)
 
 
+
 def run():
 	""" builds UI
 	"""
 	global win
+
+	# close window if window exist
+	if win:
+		win.close()
+
 	win = ColorTaggingUI(parent=getMayaWindow())
 
 
@@ -121,12 +130,6 @@ class ColorTaggingUI(qtToolInstance.QDialog):
 
 	def __init__(self, parent = None):
 		super(ColorTaggingUI, self).__init__(parent)
-
-		# close window if window existed
-		for widget in parent.findChildren(qtToolInstance.QDialog):
-			if widget is not self:
-				if widget.objectName() == self.objectName():
-					widget.close()
 
 
 		# UI variables
