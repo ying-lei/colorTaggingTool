@@ -132,106 +132,62 @@ class ColorTaggingUI(qtToolInstance.QDialog):
 
 
 		# UI variables
-		self.syncColor = 0
-		self.counter = 0
+		self.outlinerEnable = 0
+		self.wireframeEnable = 0
+
+		# self.counter = 0
 
 		# topmost layout
 		self.gridLayout = qtToolInstance.QGridLayout()
 		self.verticalLayout = qtToolInstance.QVBoxLayout()
 	
 		# label
-		self.outlinerLabel = qtToolInstance.QLabel("Choose Outliner Color")
-		self.verticalLayout.addWidget(self.outlinerLabel)
+		self.taggingLabel = qtToolInstance.QLabel("Tagging color for...")
+		self.verticalLayout.addWidget(self.taggingLabel)
+		
+		# checkbox
+		self.outlinerCheckbox = qtToolInstance.QCheckBox("Outliner")
+		self.outlinerCheckbox.setChecked(True)
+		self.verticalLayout.addWidget(self.outlinerCheckbox)
+		
+		self.wireframeCheckbox = qtToolInstance.QCheckBox("Wireframe")
+		self.verticalLayout.addWidget(self.wireframeCheckbox)
 
-		# button grid 01
+		# button grid
 		self.buttonGridLayout_1 = qtToolInstance.QGridLayout()
 		self.buttonGridLayout_1.setHorizontalSpacing(1)
 		self.buttonGridLayout_1.setVerticalSpacing(1)
 
-		self.outlinerButtonGrp = qtToolInstance.QButtonGroup()
+		self.taggingButtonGrp = qtToolInstance.QButtonGroup()
 
 		# adding buttons to grid
 		outlinerBtnNum = 0
-		for i in range(32):
-			self.colorButton = qtToolInstance.QPushButton("")
-			self.colorButton.setMinimumSize(20,20)
-			self.colorButton.setMaximumSize(20,20)
-			self.colorButton.setCheckable(1)
-
-			if outlinerBtnNum == 0:
-				self.colorButton.setMinimumSize(60,20)
-				self.colorButton.setMaximumSize(60,20)
-				self.colorButton.setText("Disable")
-
-
-			else:
-				bColor = colorMapDict.get(outlinerBtnNum)
-				#_logger.debug("bColor: {0}".format(bColor))
-
-				self.colorButton.setStyleSheet('QPushButton {background-color: rgb(%d,%d,%d); color: white}' % (bColor))
-
-
-			self.outlinerButtonGrp.addButton(self.colorButton, outlinerBtnNum)
-
-			# adding button to the grid
-			self.buttonGridLayout_1.addWidget(self.colorButton, 0, i)
-			outlinerBtnNum += 1
+		for i in range(4):
+			for j in range(8):
+				self.colorButton = qtToolInstance.QPushButton("")
+				self.colorButton.setMinimumSize(20,20)
+				self.colorButton.setMaximumSize(20,20)
+				self.colorButton.setCheckable(1)
+	
+				if outlinerBtnNum == 0:
+					self.colorButton.setText("X")
+	
+	
+				else:
+					bColor = colorMapDict.get(outlinerBtnNum)
+					#_logger.debug("bColor: {0}".format(bColor))
+	
+					self.colorButton.setStyleSheet('QPushButton {background-color: rgb(%d,%d,%d); color: white}' % (bColor))
+	
+	
+				self.taggingButtonGrp.addButton(self.colorButton, outlinerBtnNum)
+	
+				# adding button to the grid
+				self.buttonGridLayout_1.addWidget(self.colorButton, i, j)
+				outlinerBtnNum += 1
 	
 		self.verticalLayout.addLayout(self.buttonGridLayout_1)
 
-
-		self.emptySpace_1 = qtToolInstance.QLabel("")
-		self.verticalLayout.addWidget(self.emptySpace_1)
-
-
-		# lable
-		self.wireframeLabel = qtToolInstance.QLabel("Choose Wireframe Color")
-		self.verticalLayout.addWidget(self.wireframeLabel)
-
-
-		# button grid 02
-		self.buttonGridLayout_2 = qtToolInstance.QGridLayout()
-		self.buttonGridLayout_2.setHorizontalSpacing(1)
-		self.buttonGridLayout_2.setVerticalSpacing(1)
-
-		self.wireframeButtonGrp = qtToolInstance.QButtonGroup()
-
-		# adding buttons to grid
-		wireframeBtnNum = 0
-		for i in range(32):
-			self.colorButton = qtToolInstance.QPushButton("")
-			self.colorButton.setMinimumSize(20,20)
-			self.colorButton.setMaximumSize(20,20)
-			self.colorButton.setCheckable(1)
-
-			if wireframeBtnNum == 0:
-				self.colorButton.setMinimumSize(60,20)
-				self.colorButton.setMaximumSize(60,20)
-				self.colorButton.setText("Disable")
-
-
-			else:
-				bColor = colorMapDict.get(wireframeBtnNum)
-				_logger.debug("bColor: {0}".format(bColor))
-
-				self.colorButton.setStyleSheet('QPushButton {background-color: rgb(%d,%d,%d); color: white}' % (bColor))
-
-
-			self.wireframeButtonGrp.addButton(self.colorButton, wireframeBtnNum)
-
-			# adding button to the grid
-			self.buttonGridLayout_2.addWidget(self.colorButton, 0, i)
-			wireframeBtnNum += 1
-	
-		self.verticalLayout.addLayout(self.buttonGridLayout_2)
-
-
-		# sync checkbox
-		self.syncColorCheckBox = qtToolInstance.QCheckBox("Sync outliner color and wireframe color")
-		self.verticalLayout.addWidget(self.syncColorCheckBox)
-
-		self.emptySpace_2 = qtToolInstance.QLabel("")
-		self.verticalLayout.addWidget(self.emptySpace_2)
 
 
 		# disable all btn
@@ -248,7 +204,7 @@ class ColorTaggingUI(qtToolInstance.QDialog):
 		self.setWindowTitle("COLOR TAGGING TOOL")
 		self.setLayout(self.gridLayout)
 
-		self.setFixedSize(740, 200)
+		self.setFixedSize(230, 200)
 
 		self.initUIState();
 		self.show();
@@ -261,8 +217,10 @@ class ColorTaggingUI(qtToolInstance.QDialog):
 	def initUIState(self, colorIndex = 0):
 		""" sets up init state of UI
 		"""
-		self.initButtonGroup(self.outlinerButtonGrp)
-		self.initButtonGroup(self.wireframeButtonGrp)
+		self.initButtonGroup(self.taggingButtonGrp)
+		
+		self.outlinerCheckboxToggled()
+		self.wireframeCheckboxToggled()
 
 
 
@@ -270,13 +228,11 @@ class ColorTaggingUI(qtToolInstance.QDialog):
 	def makeConnections(self):
 		""" connect events in UI"""
 	
-		self.outlinerButtonGrp.buttonClicked.connect(self.outlinerButtonClicked)
-		self.wireframeButtonGrp.buttonClicked.connect(self.wireframeButtonClicked)
-
+		self.taggingButtonGrp.buttonClicked.connect(self.taggingButtonClicked)
 		self.disableAllBtn.clicked.connect(self.disableAllBtnClicked)
 
-		self.syncColorCheckBox.stateChanged.connect(self.syncColorCheckBoxToggled)
-
+		self.outlinerCheckbox.stateChanged.connect(self.outlinerCheckboxToggled)
+		self.wireframeCheckbox.stateChanged.connect(self.wireframeCheckboxToggled)
 
 
 
@@ -319,99 +275,78 @@ class ColorTaggingUI(qtToolInstance.QDialog):
 
 
 
-	def outlinerButtonClicked(self):
-		outlinerColorIndex = self.outlinerButtonGrp.checkedId()
-		_logger.debug("outlinerColorIndex: {0}".format(outlinerColorIndex)) 
-
-		outlinerOnList = getSelection()		
-		_logger.debug("outlinerOnList: {0}".format(outlinerOnList)) 
-
-		if not len(outlinerOnList) == 0:
-
-			if outlinerColorIndex == 0:
-				outlinerOverrideOff(outlinerOnList)
-				_logger.debug("Disable outliner color") 
-			
-			else:
-				outlinerOverrideOn(outlinerOnList, outlinerColorIndex)
-				_logger.debug("Enable outliner color") 
-
-		else:
-			_logger.error("Nothing selected")
-
-		
-		# check if need to sync color
-		if self.syncColor == 1:
-			self.toggleWireframeColor(outlinerColorIndex)
-			self.counter += 1
-
-			if self.counter < 2:
-				self.wireframeButtonClicked()
-
-			else:
-				self.counter = 0
-				pass
-			
-		else:
-			pass
-
-
-		self.initUIState()
-		refreshMayaUI()
-
-
-
-
-	def wireframeButtonClicked(self):
-		wireframeColorIndex = self.wireframeButtonGrp.checkedId()
-		_logger.debug("wireframeColorIndex: {0}".format(wireframeColorIndex))
-
-		wireframeOnList = getSelection()
-		_logger.debug("wireframeOnList: {0}".format(wireframeOnList)) 
-
-		if not len(wireframeOnList) == 0:
-
-			if wireframeColorIndex == 0:
-				wireframeOverrideOff(wireframeOnList)
-				_logger.debug("Disable outliner color") 
-			
-			else:
-				wireframeOverrideOn(wireframeOnList, wireframeColorIndex)
-				_logger.debug("Enable outliner color") 
-
-		else:
-			_logger.error("Nothing selected")
-
-
-		# check if need to sync color
-		if self.syncColor == 1:
-			self.toggleOutlinerColor(wireframeColorIndex)
-			self.counter += 1
-	
-			if self.counter < 2:
-				self.outlinerButtonClicked()
-
-			else:
-				self.counter = 0
-				pass
-
-			_logger.debug("counter: {0}".format(self.counter))
-
-		else:
-			pass
-
-
-		self.initUIState()
-		refreshMayaUI()
-
-
-
-
-	def syncColorCheckBoxToggled(self):
-		""" check if syncColor checkbox is enable
+	def taggingButtonClicked(self):
+		""" tagging color based on selected color index
 		"""
-		self.syncColor = self.syncColorCheckBox.isChecked() 
-		_logger.debug("syncColor: {0}".format(self.syncColor))
+
+		colorIndex = self.taggingButtonGrp.checkedId()
+		_logger.debug("colorIndex: {0}".format(colorIndex)) 
+
+		colorOnList = getSelection()		
+		_logger.debug("colorOnList: {0}".format(colorOnList)) 
+
+
+		# tag outliner color
+		if self.outlinerEnable == 1:
+
+			if not len(colorOnList) == 0:
+
+				if colorIndex == 0:
+					outlinerOverrideOff(colorOnList)
+					_logger.debug("Disable outliner color") 
+				
+				else:
+					outlinerOverrideOn(colorOnList, colorIndex)
+					_logger.debug("Enable outliner color") 
+
+			else:
+				_logger.error("Nothing selected")
+
+		else:
+			pass
+
+
+		# tag wireframe color
+		if self.wireframeEnable == 1:
+
+			if not len(colorOnList) == 0:
+
+				if colorIndex == 0:
+					wireframeOverrideOff(colorOnList)
+					_logger.debug("Disable outliner color") 
+				
+				else:
+					wireframeOverrideOn(colorOnList, colorIndex)
+					_logger.debug("Enable outliner color") 
+
+			else:
+				_logger.error("Nothing selected")
+
+		else:
+			pass
+
+
+
+		self.initUIState()
+		refreshMayaUI()
+
+
+
+
+	def outlinerCheckboxToggled(self):
+		""" check if outliner checkbox is enable
+		"""
+		self.outlinerEnable = self.outlinerCheckbox.isChecked() 
+		_logger.debug("outlinerEnable: {0}".format(self.outlinerEnable))
+
+
+
+
+	def wireframeCheckboxToggled(self):
+		""" check if wireframe checkbox is enable
+		"""
+		self.wireframeEnable = self.wireframeCheckbox.isChecked() 
+		_logger.debug("wireframeEnable: {0}".format(self.wireframeEnable))
 
 
 
@@ -430,7 +365,7 @@ class ColorTaggingUI(qtToolInstance.QDialog):
 		""" toggle outliner color based on colorIndex
 		"""
 
-		buttonToToggle = self.outlinerButtonGrp.button(colorIndex)
+		buttonToToggle = self.taggingButtonGrp.button(colorIndex)
 		buttonToToggle.setChecked(True)
 
 
